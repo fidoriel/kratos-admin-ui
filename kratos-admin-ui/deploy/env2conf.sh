@@ -6,5 +6,6 @@
 
 mkdir -p "$(dirname "$1")" && touch "$1"
 echo '{' >"$1"
-echo '   "reverseProxy": true' >> "$1"
+echo '   "reverseProxy": true,' >> "$1"
+echo '   "basePath": "'"${BASE_PATH:-/}"'"' >> "$1"
 echo '}' >> "$1"

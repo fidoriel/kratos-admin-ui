@@ -9,6 +9,12 @@ fi
 
 echo "Nameserver is: $NAMESERVER"
 
+if [ -z ${BASE_PATH+x} ]; then
+    export BASE_PATH="/"
+fi
+
+echo "Base path is: $BASE_PATH"
+
 checkFormat() {
     regex="http?(s)://"
     if [ "$1" == $regex* ]; then
