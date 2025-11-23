@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import reactSwc from "@vitejs/plugin-react-swc";
 
 export default defineConfig({
-  base: "/",
+  base: process.env.BASE_PATH || "/",
   plugins: [reactSwc()],
   css: {
     preprocessorOptions: {

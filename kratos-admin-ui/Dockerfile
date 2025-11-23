@@ -1,6 +1,8 @@
 FROM node:24-alpine AS build
 WORKDIR /app
 COPY . ./
+ARG BASE_PATH=/
+ENV BASE_PATH=${BASE_PATH}
 RUN npm ci \
     && npm run test \
     && npm run build
