@@ -146,7 +146,7 @@ volumes:
 ### Optional Environment Variables
 
 - `NAMESERVER`: the nameserver to use for dns resolution for kratos urls. By default, it reads values from /etc/resolv.conf, so it works well without setting this value in many runtimes. If there is no /etc/resolv.conf, it will be set to `127.0.0.11` (Docker dns).
-- `BASE_PATH`: the subpath where the application will be hosted (default: `/`). This allows hosting the application under a specific path like `/admin` or `/kratos-ui`. **Note**: When building the Docker image, the `BASE_PATH` must be provided as a build argument to Vite. The runtime `BASE_PATH` environment variable is used for nginx routing configuration.
+- `BASE_PATH`: the subpath where the application will be hosted (default: `/`). This allows hosting the application under a specific path like `/admin` or `/kratos-ui`. This is a runtime-only configuration - the same Docker image can be deployed with different base paths.
 
 ## Start local
 
@@ -161,18 +161,9 @@ npm run start
 
 ## Build Docker-Image
 
-To build with the default base path (`/`):
-
 ```
 cd kratos-admin-ui
 docker build -t kratos-admin-ui .
 ```
 
-To build with a custom base path (e.g., `/admin`):
-
-```
-cd kratos-admin-ui
-docker build --build-arg BASE_PATH=/admin -t kratos-admin-ui .
-```
-
-**Important**: The `BASE_PATH` must be provided at build time for the assets to be properly configured. At runtime, you also need to set the `BASE_PATH` environment variable so nginx can route requests correctly.
+The Docker image is built once and can be deployed with different `BASE_PATH` values at runtime by setting the `BASE_PATH` environment variable.
