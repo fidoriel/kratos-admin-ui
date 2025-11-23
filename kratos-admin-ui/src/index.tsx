@@ -29,44 +29,88 @@ const container = document.getElementById("root");
 const root = createRoot(container!);
 
 // Load config to get basePath before rendering
-getKratosAdminConfig().then((config) => {
-  const basePath = config.basePath || "/";
-  root.render(
-    <React.StrictMode>
-      <FluentProvider theme={webDarkTheme}>
-        <Router basename={basePath}>
-          <div className="outerDIV">
-            <HeaderComponent />
-            <div className="contentDIV">
-              <MessageBarComponent></MessageBarComponent>
-              <Suspense fallback={<div> Loading...</div>}>
-                <Switch>
-                  <Route path="/identities/create">
-                    <CreateIdentitySite />
-                  </Route>
-                  <Route path="/identities/:id/view">
-                    <ViewIdentitySite />
-                  </Route>
-                  <Route path="/identities/:id/edit">
-                    <EditIdentitySite />
-                  </Route>
-                  <Route path="/identities">
-                    <IdentitiesSite />
-                  </Route>
-                  <Route path="/overview">
-                    <OverviewSite />
-                  </Route>
-                  <Redirect
-                    from="*"
-                    to="/identities"
-                  />
-                </Switch>
-              </Suspense>
+getKratosAdminConfig()
+  .then((config) => {
+    const basePath = config.basePath || "/";
+    root.render(
+      <React.StrictMode>
+        <FluentProvider theme={webDarkTheme}>
+          <Router basename={basePath}>
+            <div className="outerDIV">
+              <HeaderComponent />
+              <div className="contentDIV">
+                <MessageBarComponent></MessageBarComponent>
+                <Suspense fallback={<div> Loading...</div>}>
+                  <Switch>
+                    <Route path="/identities/create">
+                      <CreateIdentitySite />
+                    </Route>
+                    <Route path="/identities/:id/view">
+                      <ViewIdentitySite />
+                    </Route>
+                    <Route path="/identities/:id/edit">
+                      <EditIdentitySite />
+                    </Route>
+                    <Route path="/identities">
+                      <IdentitiesSite />
+                    </Route>
+                    <Route path="/overview">
+                      <OverviewSite />
+                    </Route>
+                    <Redirect
+                      from="*"
+                      to="/identities"
+                    />
+                  </Switch>
+                </Suspense>
+              </div>
+              <FooterComponent></FooterComponent>
             </div>
-            <FooterComponent></FooterComponent>
-          </div>
-        </Router>
-      </FluentProvider>
-    </React.StrictMode>,
-  );
-});
+          </Router>
+        </FluentProvider>
+      </React.StrictMode>,
+    );
+  })
+  .catch((error) => {
+    console.error("Failed to load configuration:", error);
+    // Fallback to default basePath if config loading fails
+    const basePath = "/";
+    root.render(
+      <React.StrictMode>
+        <FluentProvider theme={webDarkTheme}>
+          <Router basename={basePath}>
+            <div className="outerDIV">
+              <HeaderComponent />
+              <div className="contentDIV">
+                <MessageBarComponent></MessageBarComponent>
+                <Suspense fallback={<div> Loading...</div>}>
+                  <Switch>
+                    <Route path="/identities/create">
+                      <CreateIdentitySite />
+                    </Route>
+                    <Route path="/identities/:id/view">
+                      <ViewIdentitySite />
+                    </Route>
+                    <Route path="/identities/:id/edit">
+                      <EditIdentitySite />
+                    </Route>
+                    <Route path="/identities">
+                      <IdentitiesSite />
+                    </Route>
+                    <Route path="/overview">
+                      <OverviewSite />
+                    </Route>
+                    <Redirect
+                      from="*"
+                      to="/identities"
+                    />
+                  </Switch>
+                </Suspense>
+              </div>
+              <FooterComponent></FooterComponent>
+            </div>
+          </Router>
+        </FluentProvider>
+      </React.StrictMode>,
+    );
+  });

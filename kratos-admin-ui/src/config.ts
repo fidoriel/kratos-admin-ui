@@ -27,13 +27,18 @@ async function loadConfig() {
   if (!JSON_CONFIG.kratosAdminURL) {
     const data = await fetch("/config.json");
     JSON_CONFIG = (await data.json()) as JSONConfig;
+    // Normalize basePath: undefined or "/" both become "/"
+    if (!JSON_CONFIG.basePath) {
+      JSON_CONFIG.basePath = "/";
+    }
     if (JSON_CONFIG.reverseProxy) {
       // every admin-url starts with /admin, so there is no need to have /admin/admin. There is a url rewrite in the nginx config
-      const basePath = JSON_CONFIG.basePath && JSON_CONFIG.basePath !== "/" 
-        ? JSON_CONFIG.basePath 
-        : "";
-      JSON_CONFIG.kratosAdminURL = `${basePath}/api`;
-      JSON_CONFIG.kratosPublicURL = `${basePath}/api/public`;
+      // For URLs, we need to strip trailing slash from basePath if it's not "/"
+      const basePathPrefix = JSON_CONFIG.basePath === "/" 
+        ? "" 
+        : JSON_CONFIG.basePath;
+      JSON_CONFIG.kratosAdminURL = `${basePathPrefix}/api`;
+      JSON_CONFIG.kratosPublicURL = `${basePathPrefix}/api/public`;
     }
   }
   return JSON_CONFIG;
